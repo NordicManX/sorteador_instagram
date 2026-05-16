@@ -87,7 +87,7 @@ export default function SorteioPage() {
           <h1 className="text-4xl font-extrabold tracking-tighter bg-gradient-to-r from-purple-400 to-pink-600 bg-clip-text text-transparent">
             INSTA-SORTEIO
           </h1>
-          <p className="text-gray-400 mt-2">Sorteios com Next.js & Supabase</p>
+          <p className="text-gray-400 mt-2">Sorteador Partiu Guaratuba</p>
         </header>
 
         {/* Seção de Entrada */}
