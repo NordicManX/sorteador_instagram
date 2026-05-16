@@ -2,6 +2,7 @@
 
 import { useState } from "react";
 import { supabase } from "@/app/lib/supabase";
+import confetti from "canvas-confetti"; // 🎉 MÁGICA IMPORTADA AQUI!
 
 interface Comment {
   id: string;
@@ -53,19 +54,29 @@ export default function SorteioPage() {
     }
   };
 
- const drawWinner = async () => {
+  const drawWinner = async () => {
     if (comments.length === 0) return;
-    
+
     setIsSpinning(true);
     setWinner(null);
 
     setTimeout(async () => {
+      // Regra atual: Mais comentários = Mais chances
       const randomIndex = Math.floor(Math.random() * comments.length);
       const chosen = comments[randomIndex];
-      
+
       setWinner(chosen);
       setIsSpinning(false);
 
+      // 🎉 DISPARANDO OS CONFETES!
+      confetti({
+        particleCount: 200, // Quantidade
+        spread: 100, // Espalhamento
+        origin: { y: 0.6 }, // Nascer do meio da tela para baixo
+        colors: ['#ec4899', '#8b5cf6', '#22c55e', '#ffffff'] // Rosa, Roxo, Verde, Branco
+      });
+
+      // Persistindo o vencedor no banco
       const { error } = await supabase.from("giveaways").insert({
         post_url: postUrl,
         instagram_post_id: chosen.id,
@@ -79,8 +90,9 @@ export default function SorteioPage() {
   };
 
   return (
-    <div className="min-h-screen bg-black text-white p-8 font-sans">
-      <div className="max-w-xl mx-auto space-y-8">
+    <div className="min-h-screen bg-black text-white p-8 font-sans flex flex-col">
+      {/* O flex-grow garante que esta área empurre o footer lá para baixo */}
+      <div className="max-w-xl mx-auto space-y-8 flex-grow w-full">
         <header className="text-center">
           <h1 className="text-4xl font-extrabold tracking-tighter bg-gradient-to-r from-purple-400 to-pink-600 bg-clip-text text-transparent">
             INSTA-SORTEIO
@@ -123,20 +135,37 @@ export default function SorteioPage() {
             </div>
 
             {winner && (
-              <div className={`p-8 rounded-3xl border-2 text-center transition-all duration-500 ${
+              <div className={`p-4 sm:p-8 rounded-3xl border-2 text-center transition-all duration-500 w-full overflow-hidden ${
                 isSpinning ? 'border-zinc-700 opacity-50 scale-95' : 'border-green-500 bg-green-500/10 scale-100 shadow-[0_0_20px_rgba(34,197,94,0.2)]'
               }`}>
                 <h2 className="text-xs uppercase tracking-[0.2em] text-green-500 font-bold mb-2">
                   🏆 Ganhador(a) 🏆
                 </h2>
-                <p className="text-4xl font-black mt-2 tracking-tight">@{winner.username}</p>
+                <p className="text-2xl sm:text-3xl md:text-4xl font-black mt-2 tracking-tight break-all w-full">
+                  @{winner.username}
+                </p>
                 <div className="h-px bg-zinc-800 w-1/2 mx-auto my-4" />
-                <p className="text-zinc-300 italic text-lg">"{winner.text}"</p>
+                <p className="text-zinc-300 italic text-base md:text-lg break-words w-full">
+                  "{winner.text}"
+                </p>
               </div>
             )}
           </section>
         )}
       </div>
+
+      {/* 🚀 NOVO: Seção do Footer */}
+      <footer className="mt-16 pt-8 border-t border-zinc-900 text-center text-zinc-500 text-sm max-w-xl mx-auto w-full">
+        <p>
+          © {new Date().getFullYear()} Partiu Guaratuba. Sorteio Auditável.
+        </p>
+        <p className="mt-2">
+          Desenvolvido com 💻 e ☕ por <span className="text-pink-500 font-semibold hover:text-pink-400 transition-colors cursor-pointer">Nelson Carvalho(NordicManX)</span>
+        </p>
+        <p className="mt-2 text-xs opacity-40">
+          Este sistema opera de forma independente e não possui vínculo oficial com a Meta Platforms, Inc. ou Instagram.
+        </p>
+      </footer>
     </div>
   );
 }
