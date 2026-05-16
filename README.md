@@ -1,4 +1,4 @@
-# 🏆 Insta-Sorteio — Sorteador de Instagram Resiliente
+# 🏆 Insta-Sorteio — Sorteador de Instagram (apenas comentários)
 
 Plataforma de sorteios automatizados desenvolvida em **Next.js (App Router)** com integração ao **Supabase** para persistência de dados e à **StarAPI (via RapidAPI)** para raspagem de dados em tempo real. Este projeto foi arquitetado sob medida para o sorteio semanal de combos da parceria entre as marcas **Partiu Guaratuba** e **Yasai Lanches**.
 
