@@ -1,7 +1,6 @@
 "use client";
 
 import { useState } from "react";
-// Ajustado para bater com a pasta lib na raiz, conforme seu tsconfig.json
 import { supabase } from "@/app/lib/supabase";
 
 interface Comment {
@@ -26,7 +25,7 @@ export default function SorteioPage() {
 
     setLoading(true);
     setWinner(null);
-    setComments([]); // Limpa a lista anterior antes de buscar nova
+    setComments([]);
 
     try {
       const response = await fetch("/api/fetch-comments", {
@@ -61,7 +60,6 @@ export default function SorteioPage() {
     setWinner(null);
 
     setTimeout(async () => {
-      // Sorteia direto da lista bruta, sem filtrar duplicados!
       const randomIndex = Math.floor(Math.random() * comments.length);
       const chosen = comments[randomIndex];
       

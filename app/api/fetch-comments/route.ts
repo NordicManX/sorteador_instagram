@@ -60,7 +60,6 @@ export async function POST(request: Request) {
         can_support_threading: true,
       };
 
-      // 🚨 O SEGREDO DESCOBERTO: A API exige o parâmetro 'min_id'
       if (nextCursor) {
         requestBody.min_id = nextCursor;
       }
@@ -85,20 +84,17 @@ export async function POST(request: Request) {
       const rawComments = commentsBody?.comments || commentsBody?.items || [];
       allRawComments = [...allRawComments, ...rawComments];
 
-      // 🚨 IGNORANDO A MENTIRA DA API:
-      // A API diz que 'has_more_comments' é false, mas nos envia o 'next_min_id'.
-      // Então pegamos o token do Raio-X!
       nextCursor = commentsBody?.next_min_id || null;
 
       if (nextCursor) {
         hasMore = true;
         console.log(
-          `📄 Página ${loopCount} carregada. Avançando com o token gerado!`,
+          `Página ${loopCount} carregada. Avançando com o token gerado!`,
         );
       } else {
         hasMore = false;
         console.log(
-          `📄 Página ${loopCount} carregada. Nenhum token encontrado. Fim da lista!`,
+          `Página ${loopCount} carregada. Nenhum token encontrado. Fim da lista!`,
         );
       }
     }
@@ -111,11 +107,11 @@ export async function POST(request: Request) {
     }));
 
     console.log(
-      `🎉 SUCESSO ABSOLUTO! ${formattedComments.length} comentários capturados no total.`,
+      `SUCESSO! ${formattedComments.length} comentários capturados no total.`,
     );
     return NextResponse.json({ comments: formattedComments });
   } catch (error: any) {
-    console.error("🔥 Erro:", error.message);
+    console.error("Erro:", error.message);
     return NextResponse.json({ error: "Erro interno." }, { status: 500 });
   }
 }
