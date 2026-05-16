@@ -37,8 +37,9 @@ export async function POST(request: Request) {
     const numericId = item?.pk || (item?.id ? item.id.split("_")[0] : null);
 
     if (!numericId) {
+      const detalheDoErro = JSON.stringify(infoData).substring(0, 200);
       return NextResponse.json(
-        { error: "Falha ao isolar ID." },
+        { error: `A RapidAPI bloqueou: ${detalheDoErro}` },
         { status: 400 },
       );
     }
